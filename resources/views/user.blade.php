@@ -1,6 +1,20 @@
 
 @extends('layout')
 @section('content')
+
+
+@if(session('success'))
+    <div id="flash-message" class="alert alert-{{ session('alertColor', 'success') }}">
+        {{ session('success') }}
+    </div>
+    <script>
+        setTimeout(function() {
+            $('#flash-message').fadeOut();
+        }, 2000);
+    </script>
+@endif
+
+
 <div class="container mt-5">
     <h1 class="mb-4">User Manager</h1>
     <div>

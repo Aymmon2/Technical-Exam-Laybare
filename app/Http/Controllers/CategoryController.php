@@ -26,7 +26,7 @@ class CategoryController extends Controller
             'product_manager' => $request->input('product_manager'),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        return redirect()->route('categories.index')->with('success', '201 created');
     }
 
     public function update(Request $request, Category $category)
@@ -43,14 +43,17 @@ class CategoryController extends Controller
             'product_manager' => $request->input('product_manager'),
         ]);
 
-        return redirect()->route('categories.index')->with('success', 'Category updated successfully');
+        return redirect()->route('categories.index')->with('success', '200 OK');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('categories.index')->with([
+            'alertColor' => 'danger',
+            'success' => '204 No Content'
+        ]);
     }
 
 }

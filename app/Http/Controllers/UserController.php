@@ -12,11 +12,12 @@ class UserController extends Controller
         $users = User::all();
 
         return view('user', compact('users'));
+
     }
 
     public function store(Request $request)
     {
-        // Validate the form data
+
         $request->validate([
             'username' => 'required|unique:users',
             'first_name' => 'required',
@@ -36,7 +37,7 @@ class UserController extends Controller
         ]);
 
 
-        return redirect()->route('users.index')->with('success', 'User created successfully');
+        return redirect()->route('users.index')->with('success', '201 created');
     }
 
     public function update(Request $request, User $user)
@@ -61,13 +62,16 @@ class UserController extends Controller
             'password' => bcrypt($request->input('password')),
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
+        return redirect()->route('users.index')->with('success', 'Category updated successfully');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully');
+        return redirect()->route('users.index')->with([
+            'alertColor' => 'danger',
+            'success' => '204 No Content'
+        ]);
     }
 }
