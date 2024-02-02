@@ -15,6 +15,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="collapse navbar-collapse" id="navbarNav">
+                <label>Laybare Exam</label>
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard.index') }}">Dashboard Manager</a>
@@ -35,8 +36,20 @@
         </div>
     </nav>
 
+
     <div class="container mx-auto mt-5">
-        <!-- Your content goes here -->
+        @if(session('success'))
+            <div id="flash-message" class="alert alert-{{ session('alertColor', 'success') }}">
+                {{ session('success') }}
+            </div>
+            <script>
+                setTimeout(function() {
+                    $('#flash-message').fadeOut();
+                }, 2000);
+            </script>
+        @endif
+
+
 
         @yield('content')
     </div>
@@ -46,8 +59,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- DataTables JS CDN -->
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js">
-    </script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -65,6 +77,13 @@
             color: white;
             background-color: #212529ff;
             white-space: nowrap;
+        }
+    </style>
+    <style>
+        input[readonly] {
+            background-color: #f2f2f2;
+            color: #555;
+            cursor: auto;
         }
     </style>
 

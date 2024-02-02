@@ -1,20 +1,6 @@
 
 @extends('layout')
 @section('content')
-
-
-@if(session('success'))
-    <div id="flash-message" class="alert alert-{{ session('alertColor', 'success') }}">
-        {{ session('success') }}
-    </div>
-    <script>
-        setTimeout(function() {
-            $('#flash-message').fadeOut();
-        }, 2000);
-    </script>
-@endif
-
-
 <div class="container mt-5">
     <h1 class="mb-4">User Manager</h1>
     <div>
@@ -65,7 +51,7 @@
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="editModalLabel{{$user->id}}">Edit User</h5>
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
@@ -77,7 +63,7 @@
 
                                                     <div class="mb-3">
                                                         <label for="username" class="form-label">Username</label>
-                                                        <input type="text" class="form-control" name="username" value="{{ $user->username }}" disabled>
+                                                        <input type="text" class="form-control" name="username" value="{{ $user->username }}" readonly>
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="first_name" class="form-label">First Name</label>
@@ -93,10 +79,8 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="email" class="form-label">Email</label>
-                                                        <input type="email" class="form-control" name="email" value="{{ $user->email }}" disabled>
+                                                        <input type="email" class="form-control" name="email" value="{{ $user->email }}" readonly>
                                                     </div>
-
-
 
                                                     <button type="submit" class="btn btn-primary"><i class="bi bi-plus-square"></i> Save Changes</button>
                                                 </form>
@@ -176,6 +160,5 @@
     });
 }
 </script>
-
 
 @endsection

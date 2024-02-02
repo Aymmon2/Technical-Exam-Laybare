@@ -8,6 +8,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
+Route::get('/destroy', [DashboardController::class, 'destroy'])->name('dashboard.destroy');
 
 Route::get('users', [UserController::class, 'index'])->name('users.index');
 Route::post('users/store', [UserController::class, 'store'])->name('users.store');

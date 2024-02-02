@@ -40,9 +40,8 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', '201 created');
     }
 
-    public function update(Request $request, User $user)
+        public function update(Request $request, User $user)
     {
-
         $request->validate([
             'username' => 'required|unique:users,username,' . $user->id,
             'first_name' => 'required',
@@ -52,18 +51,24 @@ class UserController extends Controller
             'password' => 'nullable|min:6',
         ]);
 
-
-        $user->update([
+        $data = [
             'username' => $request->input('username'),
             'first_name' => $request->input('first_name'),
             'middle_name' => $request->input('middle_name'),
             'last_name' => $request->input('last_name'),
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
-        ]);
+        ];
 
-        return redirect()->route('users.index')->with('success', 'Category updated successfully');
+        // Conditionally update the password if provided
+        if ($request->has('password')) {
+            $data['password'] = bcrypt($request->input('password'));
+        }
+
+        $user->update($data);
+
+        return redirect()->route('users.index')->with('success', '200 OK');
     }
+
 
     public function destroy(User $user)
     {

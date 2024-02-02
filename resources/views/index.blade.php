@@ -1,6 +1,4 @@
-
 @extends('layout')
-
 @section('content')
     <div class="container mt-5">
         <h1 class="mb-4">Dashboard</h1>
@@ -25,6 +23,7 @@
                                     <th>Product Name</th>
                                     <th>SKU</th>
                                     <th>Category</th>
+                                    <th>Product Image</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -35,15 +34,26 @@
                                         <td>{{ $product->product_sku }}</td>
                                         <td>{{ $product->product_category }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary"
-                                                data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
-                                                View Details
-                                            </button>
+                                            @if($product->product_image)
+                                                <div class="circle-frame">
+                                                    <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}" class="rounded-circle" width="50" height="50">
+                                                </div>
+                                            @else
+                                                No Image
+                                            @endif
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <form id="productsDeleteForm{{$product->id}}" action="{{ route('products.destroy', $product->id) }}" method="post">
+                                                @csrf
+                                                @method('DELETE')
 
-                                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                                data-bs-target="#deleteProductModal{{ $product->id }}">
-                                                Delete
-                                            </button>
+                                                <button type="button" class="btn btn-primary"
+                                                    data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
+                                                    View Details
+                                                </button>
+
+                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $product->id }})">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
 
@@ -58,6 +68,15 @@
                                                         data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
+                                                    <p>
+                                                        @if($product->product_image)
+                                                            <div class="circle-frame">
+                                                                <img src="{{ asset('storage/' . $product->product_image) }}" alt="{{ $product->product_name }}" class="rounded-circle" width="50" height="50">
+                                                            </div>
+                                                        @else
+                                                            No Image
+                                                        @endif
+                                                    </p>
                                                     <p><strong>Product Name:</strong> {{ $product->product_name }}</p>
                                                     <p><strong>SKU:</strong> {{ $product->product_sku }}</p>
                                                     <p><strong>Category:</strong> {{ $product->product_category }}</p>
@@ -86,5 +105,23 @@
             $('#datatable').DataTable();
         });
     </script>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You won\'t be able to revert this!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('productsDeleteForm' + id).submit();
+            }
+        });
+    }
+</script>
 
 @endsection

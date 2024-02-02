@@ -14,5 +14,13 @@ class DashboardController extends Controller
         return view('index', compact('products'));
     }
 
+    public function destroy(Product $product)
+    {
+        $product->delete();
 
+        return redirect()->route('index')->with([
+            'alertColor' => 'danger',
+            'success' => '204 No Content'
+        ]);
+    }
 }
