@@ -1,10 +1,10 @@
 
 @extends('layout')
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 UserManager">
     <h1 class="mb-4">User Manager</h1>
     <div>
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createUserModal"><i class="bi bi-plus-square"></i> Create New User</button>
+        <button type="button" class="btn btn-primary mb-3 add" data-bs-toggle="modal" data-bs-target="#createUserModal"><i class="bi bi-plus-square"></i> Create New User</button>
     </div>
 
     <div class="col-md-12">
@@ -35,11 +35,11 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{$user->id}}">
+                                            <button type="button" class="btn btn-primary edit" data-bs-toggle="modal" data-bs-target="#editModal{{$user->id}}">
                                                 Edit
                                             </button>
 
-                                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $user->id }})">Delete</button>
+                                            <button type="button" class="btn btn-danger delete" onclick="confirmDelete({{ $user->id }})">Delete</button>
                                         </form>
                                     </td>
 
@@ -134,8 +134,9 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" name="password" required>
+                        <input type="password" class="form-control" name="password" required minlength="6">
                     </div>
+
                     <button type="submit" class="btn btn-primary">Create User</button>
                 </form>
             </div>
@@ -161,4 +162,33 @@
 }
 </script>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('introShown')) {
+        introJs().setOptions({
+            steps: [
+                    {
+                        element: document.querySelector('.UserManager'),
+                        intro: 'User Manager'
+                    },
+                    {
+                        element: document.querySelector('.add'),
+                        intro: 'Add User'
+                    },
+                    {
+                        element: document.querySelector('.edit'),
+                        intro: 'Edit User data'
+                    },
+                    {
+                        element: document.querySelector('.delete'),
+                        intro: 'Delete user record using soft-deletion method.'
+                    },
+                  ],
+            exitOnOverlayClick: true,
+        }).start();
+
+            localStorage.setItem('introShown', true);
+        }
+    });
+</script>
 @endsection

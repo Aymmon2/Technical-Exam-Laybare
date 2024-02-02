@@ -1,9 +1,9 @@
 @extends('layout')
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 CategoryManager">
     <h1 class="mb-4">Category Manager</h1>
     <div>
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createCategoryModal"><i class="bi bi-plus-square"></i> Create New Category</button>
+        <button type="button" class="btn btn-primary mb-3 add" data-bs-toggle="modal" data-bs-target="#createCategoryModal"><i class="bi bi-plus-square"></i> Create New Category</button>
     </div>
 
     <div class="col-md-12">
@@ -31,11 +31,11 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{$category->id}}">
+                                            <button type="button" class="btn btn-primary edit" data-bs-toggle="modal" data-bs-target="#editModal{{$category->id}}">
                                                 Edit
                                             </button>
 
-                                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $category->id }})">Delete</button>
+                                            <button type="button" class="btn btn-danger delete" onclick="confirmDelete({{ $category->id }})">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -133,6 +133,36 @@
         }
     });
 }
+</script>
+
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('introShown')) {
+                introJs().setOptions({
+                    steps: [
+                        {
+                            element: document.querySelector('.CategoryManager'),
+                            intro: 'Category Manager'
+                        },
+                        {
+                            element: document.querySelector('.add'),
+                            intro: 'Add Category'
+                        },
+                        {
+                            element: document.querySelector('.edit'),
+                            intro: 'Edit Category data'
+                        },
+                        {
+                            element: document.querySelector('.delete'),
+                            intro: 'Delete category record using soft-deletion method.'
+                        },
+                    ],
+                    exitOnOverlayClick: true,
+                }).start();
+
+                localStorage.setItem('introShown', true);
+            }
+        });
 </script>
 
 <style>

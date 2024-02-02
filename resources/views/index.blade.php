@@ -1,26 +1,26 @@
 @extends('layout')
 @section('content')
-    <div class="container mt-5">
+    <div class="container mt-5 dashboard">
         <h1 class="mb-4">Dashboard</h1>
         <div class="col-md-12">
             <div class="card shadow-sm border-1 pipelinetable">
                 <div class="card-body">
                     <h4 class="card-title" style="color:#0A1832">(Landing Page)</h4>
 
-                    <label for="category_filter">Filter by Category:</label>
-                    <select id="category_filter">
+                    <label class="categoryFilter" for="category_filter">Filter by Category:
+                    <select id="category_filter" onchange="filterProducts()">
                         <option value="all">Show All</option>
                         @foreach ($products as $product)
-                            <option value="{{ $product->id }}">{{ $product->product_category }}</option>
+                            <option value="{{ $product->product_category }}">{{ $product->product_category }}</option>
                         @endforeach
                     </select>
-
+                </label>
                     <div class="row">
                         <table id="datatable" class="table dt-responsive wrap"
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr class="text-center">
-                                    <th>Product Name</th>
+                                    <th class="productName">Product Name</th>
                                     <th>SKU</th>
                                     <th>Category</th>
                                     <th>Product Image</th>
@@ -47,12 +47,12 @@
                                                 @csrf
                                                 @method('DELETE')
 
-                                                <button type="button" class="btn btn-primary"
+                                                <button type="button" class="btn btn-primary viewdetails"
                                                     data-bs-toggle="modal" data-bs-target="#productModal{{ $product->id }}">
                                                     View Details
                                                 </button>
 
-                                                <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $product->id }})">Delete</button>
+                                                <button type="button" class="btn btn-danger delete" onclick="confirmDelete({{ $product->id }})">Delete</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -122,6 +122,61 @@
             }
         });
     }
+</script>
+
+<script>
+    function filterProducts() {
+        var selectedCategory = document.getElementById('category_filter').value;
+        var rows = document.getElementById('datatable').getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+        for (var i = 0; i < rows.length; i++) {
+            var rowCategory = rows[i].getElementsByTagName('td')[2].innerText; // Assuming category is in the third column
+
+            if (selectedCategory === 'all' || selectedCategory === rowCategory) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('introShown')) {
+        introJs().setOptions({
+            steps: [
+                {
+                    title: 'Welcome',
+                    intro: 'Hello Lay Bare, please allow me to introduce My Practical Exam base in the EXERCISE DETAILS next if you want to continue'
+                },
+                {
+                    element: document.querySelector('.dashboard'),
+                    intro: 'This is the Dashboard (Landing Page)'
+                },
+                {
+                    element: document.querySelector('.viewdetails'),
+                    intro: 'Show the product details with full description when a product from the list is clicked'
+                },
+                {
+                    element: document.querySelector('.categoryFilter'),
+                    intro: 'Add a category filter that will list products based on the selected category. By default, the selected filter should be “Show All”, which is a pseudo-category to list all products from all categories.'
+                },
+                {
+                    element: document.querySelector('.productName'),
+                    intro: 'Show the product details with full description when a product from the list is clicked'
+                },
+                {
+                    element: document.querySelector('.delete'),
+                    intro: 'Soft-deleted products should not be visible in the list.'
+                },
+            ],
+            exitOnOverlayClick: true,
+        }).start();
+
+            localStorage.setItem('introShown', true);
+        }
+    });
 </script>
 
 @endsection

@@ -1,9 +1,9 @@
 @extends('layout')
 @section('content')
-<div class="container mt-5">
+<div class="container mt-5 ProductManager">
     <h1 class="mb-4">Product Manager</h1>
     <div>
-        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createProductModal"><i class="bi bi-plus-square"></i> Create New Product</button>
+        <button type="button" class="btn btn-primary mb-3 add" data-bs-toggle="modal" data-bs-target="#createProductModal"><i class="bi bi-plus-square"></i> Create New Product</button>
     </div>
 
     <div class="col-md-12">
@@ -47,11 +47,11 @@
                                             @csrf
                                             @method('DELETE')
 
-                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{$product->id}}">
+                                            <button type="button" class="btn btn-primary edit" data-bs-toggle="modal" data-bs-target="#editModal{{$product->id}}">
                                                 Edit
                                             </button>
 
-                                            <button type="button" class="btn btn-danger" onclick="confirmDelete({{ $product->id }})">Delete</button>
+                                            <button type="button" class="btn btn-danger delete" onclick="confirmDelete({{ $product->id }})">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -288,6 +288,37 @@
             }
         });
     }
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!localStorage.getItem('introShown')) {
+            introJs().setOptions({
+                steps: [
+                    {
+                        element: document.querySelector('.ProductManager'),
+                        intro: 'Product Manager'
+                    },
+                    {
+                        element: document.querySelector('.add'),
+                        intro: 'Add Product'
+                    },
+                    {
+                        element: document.querySelector('.edit'),
+                        intro: 'Edit Product data'
+                    },
+                    {
+                        element: document.querySelector('.delete'),
+                        intro: 'Delete Product record using soft-deletion method.'
+                    },
+                ],
+                exitOnOverlayClick: true,
+            }).start();
+
+            localStorage.setItem('introShown', true);
+
+        }
+    });
 </script>
 
 @endsection
